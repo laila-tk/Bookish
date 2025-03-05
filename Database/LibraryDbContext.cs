@@ -14,7 +14,7 @@ namespace Bookish.Database
         public DbSet<Bookish.Models.Book> Book { get; set; } = default!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { 
-            optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=Library;User Id=bookish;Password=bookis;");
+            optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=Library;User Id=bookish;Password=bookish;");
         }
     }
 }
