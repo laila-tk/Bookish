@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\LaiKha\\Training\\Bookish\\Bookish.csproj": {}
+    "C:\\Users\\KalNat\\Training\\Bookish\\Bookish\\Bookish.csproj": {}
   },
   "projects": {
-    "C:\\Users\\LaiKha\\Training\\Bookish\\Bookish.csproj": {
+    "C:\\Users\\KalNat\\Training\\Bookish\\Bookish\\Bookish.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LaiKha\\Training\\Bookish\\Bookish.csproj",
+        "projectUniqueName": "C:\\Users\\KalNat\\Training\\Bookish\\Bookish\\Bookish.csproj",
         "projectName": "Bookish",
-        "projectPath": "C:\\Users\\LaiKha\\Training\\Bookish\\Bookish.csproj",
-        "packagesPath": "C:\\Users\\LaiKha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LaiKha\\Training\\Bookish\\obj\\",
+        "projectPath": "C:\\Users\\KalNat\\Training\\Bookish\\Bookish\\Bookish.csproj",
+        "packagesPath": "C:\\Users\\KalNat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\KalNat\\Training\\Bookish\\Bookish\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\LaiKha\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\KalNat\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
