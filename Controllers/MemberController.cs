@@ -12,9 +12,9 @@ namespace Bookish.Controllers
 {
     public class MemberController : Controller
     {
-        private readonly LibraryDbContext _context;
+        private readonly LibraryContext _context;
 
-        public MemberController(LibraryDbContext context)
+        public MemberController(LibraryContext context)
         {
             _context = context;
         }

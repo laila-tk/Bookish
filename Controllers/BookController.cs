@@ -13,9 +13,9 @@ namespace Bookish.Controllers
 {
     public class BookController : Controller
     {
-        private readonly LibraryDbContext _context;
+        private readonly LibraryContext _context;
 
-        public BookController(LibraryDbContext context)
+        public BookController(LibraryContext context)
         {
             _context = context;
         }
@@ -23,11 +23,16 @@ namespace Bookish.Controllers
         // GET: Book
         public async Task<IActionResult> Index()
         {
-             List<Book> books = new List<Book>();
-             books.Add(new Book(1,"Harry Potter and the philosopher's stone","JK Rowling","Fiction"));
-             books.Add(new Book(2,"Harry Potter and the chamber of secrets","JK Rowling","Fiction"));
-            //return View(await _context.Book.ToListAsync());
+            var books = await _context.Book.Select(model=>new BookViewModel
+            {
+                Id = model.Id,
+                Title = model.Title,
+                Author = model.Author,
+                Category = model.Category
+
+            }).ToListAsync();
             return View(books);
+            //return View(books);
         }
 
         // GET: Book/Details/5
