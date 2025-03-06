@@ -22,9 +22,9 @@ namespace Bookish.Controllers
         // GET: Book
         public async Task<IActionResult> Index()
         {
-            List<Book> books = new List<Book>();
-            books.Add(new Book(1,"Harry Potter and the philosopher's stone","JK Rowling",50,50));
-            books.Add(new Book(2,"Harry Potter and the chamber of secrets","JK Rowling",50,50));
+             List<Book> books = new List<Book>();
+             books.Add(new Book(1,"Harry Potter and the philosopher's stone","JK Rowling","Fiction"));
+             books.Add(new Book(2,"Harry Potter and the chamber of secrets","JK Rowling","Fiction"));
             //return View(await _context.Book.ToListAsync());
             return View(books);
         }
