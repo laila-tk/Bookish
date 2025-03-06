@@ -23,16 +23,7 @@ namespace Bookish.Controllers
         // GET: Book
         public async Task<IActionResult> Index()
         {
-            var books = await _context.Book.Select(model=>new BookViewModel
-            {
-                Id = model.Id,
-                Title = model.Title,
-                Author = model.Author,
-                Category = model.Category
-
-            }).ToListAsync();
-            return View(books);
-            //return View(books);
+            return View(await _context.Book.OrderBy(book=>book.Id).ToListAsync());
         }
 
         // GET: Book/Details/5
@@ -64,11 +55,13 @@ namespace Bookish.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Author,Category")] Book book)
+
+        public async Task<IActionResult> Create(Book book)
         {
+            //[Bind("Title,Author,Category")] 
             if (ModelState.IsValid)
             {
-                _context.Add(book);
+                _context.Book.Add(book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

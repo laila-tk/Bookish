@@ -21,4 +21,6 @@ public class Member {
         DateOfRegistration = dateOfRegistration;
         Email = email;
     }
+
+    public Member() {}
 }

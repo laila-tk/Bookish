@@ -14,7 +14,6 @@ public class MemberViewModel
         Id = member.Id;
         Name = member.Name;
         DateOfRegistration = member.DateOfRegistration;
-        Email = member.Email;
-         
+        Email = member.Email;    
     }
 }

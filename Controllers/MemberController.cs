@@ -22,11 +22,7 @@ namespace Bookish.Controllers
         // GET: Member
         public async Task<IActionResult> Index()
         {
-             List<Member> member = new List<Member>();
-             member.Add(new Member(1,"Vani",DateOnly.FromDateTime(DateTime.Now),"vani.natraj@gmail.com"));
-             member.Add(new Member(2,"Laila",DateOnly.FromDateTime(DateTime.Now),"lailatariqkhan@gmail.com"));
-            //return View(await _context.Member.ToListAsync());
-            return View(member);
+            return View(await _context.Member.OrderBy(member=>member.Id).ToListAsync());
         }
 
         // GET: Member/Details/5
@@ -56,11 +52,11 @@ namespace Bookish.Controllers
         // POST: Member/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DateOfRegistration,Email")] Member member)
+        public async Task<IActionResult> Create([Bind("Name,DateOfRegistration,Email")] Member member)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(member);
+                _context.Member.Add(member);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
