@@ -33,8 +33,7 @@ namespace Bookish.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var member = await _context.Member.FirstOrDefaultAsync(m => m.Id == id);
             if (member == null)
             {
                 return NotFound();
@@ -120,8 +119,7 @@ namespace Bookish.Controllers
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var member = await _context.Member.FirstOrDefaultAsync(m => m.Id == id);
             if (member == null)
             {
                 return NotFound();
@@ -147,7 +145,7 @@ namespace Bookish.Controllers
 
         private bool MemberExists(int id)
         {
-            return _context.Member.Any(e => e.Id == id);
+            return _context.Member.Any(m => m.Id == id);
         }
     }
 }
