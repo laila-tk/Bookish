@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bookish.Database;
 using Bookish.Models;
+using Bookish.ViewModels;
 
 namespace Bookish.Controllers
 {
     public class BookController : Controller
     {
-        private readonly LibraryDbContext _context;
+        private readonly LibraryContext _context;
 
-        public BookController(LibraryDbContext context)
+        public BookController(LibraryContext context)
         {
             _context = context;
         }
@@ -22,11 +23,7 @@ namespace Bookish.Controllers
         // GET: Book
         public async Task<IActionResult> Index()
         {
-             List<Book> books = new List<Book>();
-             books.Add(new Book(1,"Harry Potter and the philosopher's stone","JK Rowling","Fiction"));
-             books.Add(new Book(2,"Harry Potter and the chamber of secrets","JK Rowling","Fiction"));
-            //return View(await _context.Book.ToListAsync());
-            return View(books);
+            return View(await _context.Book.OrderBy(book=>book.Id).ToListAsync());
         }
 
         // GET: Book/Details/5
@@ -37,8 +34,7 @@ namespace Bookish.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
                 return NotFound();
@@ -54,15 +50,14 @@ namespace Bookish.Controllers
         }
 
         // POST: Book/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title")] Book book)
-        {
+
+        public async Task<IActionResult> Create(Book book)
+        {            
             if (ModelState.IsValid)
             {
-                _context.Add(book);
+                _context.Book.Add(book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -86,40 +81,27 @@ namespace Bookish.Controllers
         }
 
         // POST: Book/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title")] Book book)
+
+        public async Task<IActionResult> Edit(BookViewModel model)
         {
-            if (id != book.Id)
+             if (ModelState.IsValid)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var book = _context.Book.Find(model.Id);
+                if(model.Id == null)
                 {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookExists(book.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                book.Title = model.Title;
+                book.Author = model.Author;
+                book.Category = model.Category;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return View(book);
+            return View(model);
         }
-
+     
         // GET: Book/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -128,8 +110,7 @@ namespace Bookish.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
                 return NotFound();
@@ -155,7 +136,7 @@ namespace Bookish.Controllers
 
         private bool BookExists(int id)
         {
-            return _context.Book.Any(e => e.Id == id);
+            return _context.Book.Any(b => b.Id == id);
         }
     }
 }

@@ -20,4 +20,5 @@ public class Book {
         Author = author;  
         Category = category;     
      }
+     public Book() {}
 }
