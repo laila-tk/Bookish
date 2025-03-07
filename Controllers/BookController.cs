@@ -23,18 +23,18 @@ namespace Bookish.Controllers
         // GET: Book
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Book.OrderBy(book=>book.Id).ToListAsync());
+            return View(await _context.Book.OrderBy(book=>book.BookId).ToListAsync());
         }
 
         // GET: Book/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? bookId)
         {
-            if (id == null)
+            if (bookId == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == id);
+            var book = await _context.Book.FirstOrDefaultAsync(b => b.BookId == bookId);
             if (book == null)
             {
                 return NotFound();
@@ -59,20 +59,24 @@ namespace Bookish.Controllers
             {
                 _context.Book.Add(book);
                 await _context.SaveChangesAsync();
+
+                // _context.BookCopy.Add(copy);
+                // await _context.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(book);
         }
 
         // GET: Book/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? bookId)
         {
-            if (id == null)
+            if (bookId == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Book.FindAsync(id);
+            var book = await _context.Book.FindAsync(bookId);
             if (book == null)
             {
                 return NotFound();
@@ -88,8 +92,8 @@ namespace Bookish.Controllers
         {
              if (ModelState.IsValid)
             {
-                var book = _context.Book.Find(model.Id);
-                if(model.Id == null)
+                var book = _context.Book.Find(model.BookId);
+                if(book==null)
                 {
                     return NotFound();
                 }
@@ -103,14 +107,14 @@ namespace Bookish.Controllers
         }
      
         // GET: Book/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? bookId)
         {
-            if (id == null)
+            if (bookId == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Book.FirstOrDefaultAsync(b => b.Id == id);
+            var book = await _context.Book.FirstOrDefaultAsync(b => b.BookId == bookId);
             if (book == null)
             {
                 return NotFound();
@@ -122,9 +126,9 @@ namespace Bookish.Controllers
         // POST: Book/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int bookId)
         {
-            var book = await _context.Book.FindAsync(id);
+            var book = await _context.Book.FindAsync(bookId);
             if (book != null)
             {
                 _context.Book.Remove(book);
@@ -134,9 +138,9 @@ namespace Bookish.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(int id)
+        private bool BookExists(int bookId)
         {
-            return _context.Book.Any(b => b.Id == id);
+            return _context.Book.Any(b => b.BookId == bookId);
         }
     }
 }

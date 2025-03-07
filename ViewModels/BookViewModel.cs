@@ -4,14 +4,16 @@ namespace Bookish.ViewModels;
 
 public class BookViewModel
 {
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Author {get; set; }
-    public string Category {get; set; }
+    public required int BookId { get; set; }
+    public required string Title { get; set; }
+    public required string Author {get; set; }
+    public required string Category {get; set; }
+
+    public required List<BookCopyViewModel> Copies {get;set;} = new List<BookCopyViewModel>();
 
     public BookViewModel() {}
     public BookViewModel(Book book) {
-        Id = book.Id;
+        BookId = book.BookId;
         Title = book.Title; 
         Author = book.Author; 
         Category = book.Category;   

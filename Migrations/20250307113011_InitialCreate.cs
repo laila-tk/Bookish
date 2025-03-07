@@ -16,7 +16,7 @@ namespace Bookish.Migrations
                 name: "Book",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    BookId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Author = table.Column<string>(type: "text", nullable: false),
@@ -24,14 +24,14 @@ namespace Bookish.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Book", x => x.Id);
+                    table.PrimaryKey("PK_Book", x => x.BookId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Member",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    MemberId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     DateOfRegistration = table.Column<DateOnly>(type: "date", nullable: false),
@@ -39,18 +39,45 @@ namespace Bookish.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Member", x => x.Id);
+                    table.PrimaryKey("PK_Member", x => x.MemberId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "BookCopy",
+                columns: table => new
+                {
+                    CopyId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BookId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookCopy", x => x.CopyId);
+                    table.ForeignKey(
+                        name: "FK_BookCopy_Book_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Book",
+                        principalColumn: "BookId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookCopy_BookId",
+                table: "BookCopy",
+                column: "BookId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Book");
+                name: "BookCopy");
 
             migrationBuilder.DropTable(
                 name: "Member");
+
+            migrationBuilder.DropTable(
+                name: "Book");
         }
     }
 }
