@@ -6,13 +6,13 @@
 <p>
     Create New Checkout
 </p>
-<form asp-action="Create" method=" post">
+<form asp-action="Create" method="post">
     <div class= "form-group">
         <label asp-for="MemberId" class="control-label">Member</label>
         <select asp-for="MemberId" class ="form-control" asp-items="ViewBag.Members"></select> 
   
-        <label asp-for="CopyId"class="control-label" >Book</label>
-        <select asp-for="CopyId" class ="form-control" asp-items="ViewBag.BookTitle"></select> 
+        <label asp-for="BookCopyId"class="control-label" >Book</label>
+        <select asp-for="BookCopyId" class ="form-control" asp-items="ViewBag.BookCopy"></select> 
     </div>
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />

@@ -6,7 +6,7 @@ namespace Bookish.Models;
 
 public class BookCopy {
     [Key]
-    public int CopyId { get; set; }
+    public int BookCopyId { get; set; }
     
     [ForeignKey("Book")]
     public int BookId { get; set; }
@@ -17,7 +17,7 @@ public class BookCopy {
 
     public BookCopy(BookCopyViewModel bookCopyViewModel) {
         BookId = bookCopyViewModel.BookId;     
-        CopyId = bookCopyViewModel.CopyId;
+        BookCopyId = bookCopyViewModel.BookCopyId;
         Book = bookCopyViewModel.Book;   
     }
     //  public BookCopy(int copyId) {

@@ -25,26 +25,7 @@ namespace Bookish.Controllers
         {
             return View(await _context.BookCopy.Include(b => b.Book).ToListAsync());
         }
-
-        // GET: BookCopy/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var bookCopy = await _context.BookCopy
-                .Include(b => b.Book)
-                .FirstOrDefaultAsync(m => m.CopyId == id);
-            if (bookCopy == null)
-            {
-                return NotFound();
-            }
-
-            return View(bookCopy);
-        }
-
+        
         // GET: BookCopy/Create
         public IActionResult Create()
         {
@@ -57,9 +38,7 @@ namespace Bookish.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookCopyViewModel bookCopyViewModel)
         {   
-            Console.WriteLine("Number of copies : " + bookCopyViewModel.NumberOfCopies);
             for(int i=0; i < bookCopyViewModel.NumberOfCopies; i++) {
-                Console.WriteLine("inside for");
                 BookCopy copy = new BookCopy(bookCopyViewModel);
                 _context.BookCopy.Add(copy);
             }
@@ -67,96 +46,9 @@ namespace Bookish.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: BookCopy/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var bookCopy = await _context.BookCopy.FindAsync(id);
-            if (bookCopy == null)
-            {
-                return NotFound();
-            }
-            ViewData["BookId"] = new SelectList(_context.Set<Book>(), "BookId", "BookId", bookCopy.BookId);
-            return View(bookCopy);
-        }
-
-        // POST: BookCopy/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CopyId,BookId")] BookCopy bookCopy)
-        {
-            if (id != bookCopy.CopyId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(bookCopy);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookCopyExists(bookCopy.CopyId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BookId"] = new SelectList(_context.Set<Book>(), "BookId", "BookId", bookCopy.BookId);
-            return View(bookCopy);
-        }
-
-        // GET: BookCopy/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var bookCopy = await _context.BookCopy
-                .Include(b => b.Book)
-                .FirstOrDefaultAsync(m => m.CopyId == id);
-            if (bookCopy == null)
-            {
-                return NotFound();
-            }
-
-            return View(bookCopy);
-        }
-
-        // POST: BookCopy/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var bookCopy = await _context.BookCopy.FindAsync(id);
-            if (bookCopy != null)
-            {
-                _context.BookCopy.Remove(bookCopy);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool BookCopyExists(int id)
         {
-            return _context.BookCopy.Any(e => e.CopyId == id);
+            return _context.BookCopy.Any(e => e.BookCopyId == id);
         }
     }
 }

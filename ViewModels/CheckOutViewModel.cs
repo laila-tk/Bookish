@@ -8,8 +8,5 @@ public class CheckOutViewModel{
 
     public int CheckOutId {get; set;}
     public int MemberId{get;set;}
-    public int CopyId{get;set;}
-
-    public SelectList Members{get;set;}
-    public SelectList BookCopies{get;set;}
+    public int BookCopyId{get;set;}
 }

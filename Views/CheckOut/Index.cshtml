@@ -13,32 +13,45 @@
                 @Html.DisplayNameFor(model => model.Member.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BookCopy.Book.Title)
+                @Html.DisplayNameFor(model => model.BookCopyId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CheckoutDate)
             </th>
-             <th>
+            <th>
                 @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnDate)
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var checkout in Model) {
-        <tr>
-            <td>
-                @checkout.Member.Name
-            </td>
-             <td>
-                @checkout.BookCopy.Book.Title
-            </td>
-            <td>
-                @checkout.CheckoutDate.ToString("MM/DD/YYYY")
-            </td>
-            <td>
-                @checkout.DueDate.ToString("MM/DD/YYYY")
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Member.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookCopyId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckoutDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate) 
+                </td>
+                @if(item.ReturnDate == null) {
+                    <td>
+                        <a asp-action="Return" asp-route-checkoutId="@item.CheckOutId">Return</a> 
+                    </td>
+                } else {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReturnDate) 
+                    </td>
+                }
+            </tr>
+            }
     </tbody>
 </table>

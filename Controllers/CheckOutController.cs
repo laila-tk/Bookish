@@ -31,30 +31,38 @@ namespace Bookish.Controllers
         //GET: Checkout/Create
         public IActionResult Create()
         {
-            ViewData["Members"] = new SelectList(_context.Set<Member>(), "Name", "Name");
-            ViewData["BookTitle"] = new SelectList(_context.Set<Book>(), "Title", "Title");
+            ViewData["Members"] = new SelectList(_context.Set<Member>(), "MemberId", "Name");
+            ViewData["BookCopy"] = new SelectList(_context.Set<BookCopy>(), "BookCopyId", "BookCopyId");
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CheckOutViewModel checkOutViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var checkout = new CheckOut(checkOutViewModel);
-                checkout.CheckoutDate = DateOnly.FromDateTime(DateTime.Now);
-                checkout.DueDate = DateOnly.FromDateTime(DateTime.Now).AddDays(10);
-                checkout.ReturnDate = null;
-                _context.CheckOut.Add(checkout);
-                
-                await _context.SaveChangesAsync();
-            }
+        {           
+            var checkout = new CheckOut();
+            checkout.BookCopyId = checkOutViewModel.BookCopyId;
+            checkout.MemberId = checkOutViewModel.MemberId;
+            checkout.CheckoutDate = DateOnly.FromDateTime(DateTime.Now);
+            checkout.DueDate = DateOnly.FromDateTime(DateTime.Now).AddDays(10);
+            checkout.ReturnDate = null;
+            _context.CheckOut.Add(checkout);
+            
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
            
+        }
+
+
+        public IActionResult Return(int checkoutId)
+        {
+            var checkout = _context.CheckOut.Find(checkoutId);
+               
+            checkout.ReturnDate = DateOnly.FromDateTime(DateTime.Now);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+                
         }
     }
 }
 
-    // var availableBookCopies = _context.BookCopy
-    //             .Where(bookcopy => !bookcopy.BookCopyCheckOuts.Any(checkout => checkout.ReturnDate == null))
-    //             .ToList();
+ 

@@ -5,7 +5,7 @@ namespace Bookish.ViewModels;
 public class BookCopyViewModel
 {
 
-    public required int CopyId { get; set; }
+    public required int BookCopyId { get; set; }
     public required int BookId { get; set; }
     public required Book Book{ get; set; }
 
@@ -13,7 +13,7 @@ public class BookCopyViewModel
 
     public BookCopyViewModel() {}
     public BookCopyViewModel(BookCopy bookCopy) {
-        CopyId = bookCopy.CopyId;
+        BookCopyId = bookCopy.BookCopyId;
         BookId = bookCopy.BookId;
     }
 }

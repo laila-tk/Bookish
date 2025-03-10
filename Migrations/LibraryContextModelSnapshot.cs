@@ -49,16 +49,16 @@ namespace Bookish.Migrations
 
             modelBuilder.Entity("Bookish.Models.BookCopy", b =>
                 {
-                    b.Property<int>("CopyId")
+                    b.Property<int>("BookCopyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CopyId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookCopyId"));
 
                     b.Property<int>("BookId")
                         .HasColumnType("integer");
 
-                    b.HasKey("CopyId");
+                    b.HasKey("BookCopyId");
 
                     b.HasIndex("BookId");
 
@@ -73,20 +73,14 @@ namespace Bookish.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CheckOutId"));
 
-                    b.Property<int>("BookCopyCopyId")
+                    b.Property<int>("BookCopyId")
                         .HasColumnType("integer");
 
                     b.Property<DateOnly>("CheckoutDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("CopyId")
-                        .HasColumnType("integer");
-
                     b.Property<DateOnly>("DueDate")
                         .HasColumnType("date");
-
-                    b.Property<bool>("Late")
-                        .HasColumnType("boolean");
 
                     b.Property<int>("MemberId")
                         .HasColumnType("integer");
@@ -96,7 +90,7 @@ namespace Bookish.Migrations
 
                     b.HasKey("CheckOutId");
 
-                    b.HasIndex("BookCopyCopyId");
+                    b.HasIndex("BookCopyId");
 
                     b.HasIndex("MemberId");
 
@@ -142,7 +136,7 @@ namespace Bookish.Migrations
                 {
                     b.HasOne("Bookish.Models.BookCopy", "BookCopy")
                         .WithMany("BookCopyCheckOuts")
-                        .HasForeignKey("BookCopyCopyId")
+                        .HasForeignKey("BookCopyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
