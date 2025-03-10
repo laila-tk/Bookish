@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bookish.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20250307113011_InitialCreate")]
+    [Migration("20250310110455_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -68,6 +68,43 @@ namespace Bookish.Migrations
                     b.ToTable("BookCopy");
                 });
 
+            modelBuilder.Entity("Bookish.Models.CheckOut", b =>
+                {
+                    b.Property<int>("CopyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CopyId"));
+
+                    b.Property<int?>("BookCopyCopyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly>("CheckoutDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly>("ReturnDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("CopyId");
+
+                    b.HasIndex("BookCopyCopyId");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("CheckOut");
+                });
+
             modelBuilder.Entity("Bookish.Models.Member", b =>
                 {
                     b.Property<int>("MemberId")
@@ -103,9 +140,42 @@ namespace Bookish.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("Bookish.Models.CheckOut", b =>
+                {
+                    b.HasOne("Bookish.Models.BookCopy", null)
+                        .WithMany("BookCopyCheckOuts")
+                        .HasForeignKey("BookCopyCopyId");
+
+                    b.HasOne("Bookish.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bookish.Models.Member", "member")
+                        .WithMany("MemberCheckOuts")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("member");
+                });
+
             modelBuilder.Entity("Bookish.Models.Book", b =>
                 {
                     b.Navigation("Copies");
+                });
+
+            modelBuilder.Entity("Bookish.Models.BookCopy", b =>
+                {
+                    b.Navigation("BookCopyCheckOuts");
+                });
+
+            modelBuilder.Entity("Bookish.Models.Member", b =>
+                {
+                    b.Navigation("MemberCheckOuts");
                 });
 #pragma warning restore 612, 618
         }

@@ -53,15 +53,20 @@ namespace Bookish.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Create(Book book)
+        public async Task<IActionResult> Create(BookViewModel bookViewModel)
         {            
+            Book book = new Book(bookViewModel);
             if (ModelState.IsValid)
             {
                 _context.Book.Add(book);
                 await _context.SaveChangesAsync();
 
-                // _context.BookCopy.Add(copy);
-                // await _context.SaveChangesAsync();
+                for(int i=0; i < bookViewModel.NumberOfCopies ; i++) {
+                    BookCopy bookCopy = new();
+                    bookCopy.BookId = book.BookId;
+                    _context.BookCopy.Add(bookCopy);
+                }
+                 await _context.SaveChangesAsync();
                 
                 return RedirectToAction(nameof(Index));
             }

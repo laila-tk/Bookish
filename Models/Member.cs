@@ -1,3 +1,4 @@
+using System.ComponentModel.Design;
 using Bookish.ViewModels;
 
 namespace Bookish.Models;
@@ -7,6 +8,8 @@ public class Member {
     public required string Name { get; set; }
     public required DateOnly DateOfRegistration {get; set; }
     public required string Email {get; set;}
+
+    public ICollection<CheckOut> MemberCheckOuts {get; set;} = new List <CheckOut>();
 
     public Member(MemberViewModel memberViewModel) {
         MemberId = memberViewModel.MemberId;

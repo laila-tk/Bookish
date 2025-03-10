@@ -6,11 +6,13 @@ namespace Bookish.Models;
 
 public class BookCopy {
     [Key]
-    public required int CopyId { get; set; }
+    public int CopyId { get; set; }
     
     [ForeignKey("BookId")]
-    public required int BookId { get; set; }
-    public required Book Book{ get; set; }
+    public int BookId { get; set; }
+    public Book Book{ get; set; }
+
+    public ICollection<CheckOut> BookCopyCheckOuts{get; set;} = new List<CheckOut>();
    
 
     // public BookCopy(BookCopyViewModel bookCopyViewModel) {
