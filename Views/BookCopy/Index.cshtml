@@ -4,6 +4,18 @@
     ViewData["Title"] = "Index";
 }
 
+@{
+    var groupedBooks = Model
+        .GroupBy(b => b.BookId)
+        .Select(group => new
+        {
+            BookId = group.Key,
+            CopyCount = group.Count(),
+            Title = group.FirstOrDefault().Book.Title,
+            Author = group.FirstOrDefault().Book.Author
+        });
+}
+
 <h1>Index</h1>
 
 <p>
@@ -13,21 +25,32 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Book)
+                @Html.DisplayNameFor(model => model.Book.BookId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book.Copies)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in groupedBooks) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Book.BookId)
+                @Html.DisplayFor(modelItem => item.BookId)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CopyId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CopyId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CopyId">Delete</a>
+                @Html.DisplayFor(modelItem => item.CopyCount)
+            </td>
+            <td>
+                @* <a asp-action="Add" asp-route-id="@item.BookId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a> *@
             </td>
         </tr>
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bookish.Database;
 using Bookish.Models;
+using Bookish.ViewModels;
 
 namespace Bookish.Controllers
 {
@@ -52,20 +53,18 @@ namespace Bookish.Controllers
         }
 
         // POST: BookCopy/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CopyId,BookId")] BookCopy bookCopy)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(bookCopy);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+        public async Task<IActionResult> Create(BookCopyViewModel bookCopyViewModel)
+        {   
+            Console.WriteLine("Number of copies : " + bookCopyViewModel.NumberOfCopies);
+            for(int i=0; i < bookCopyViewModel.NumberOfCopies; i++) {
+                Console.WriteLine("inside for");
+                BookCopy copy = new BookCopy(bookCopyViewModel);
+                _context.BookCopy.Add(copy);
             }
-            ViewData["BookId"] = new SelectList(_context.Set<Book>(), "BookId", "BookId", bookCopy.BookId);
-            return View(bookCopy);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: BookCopy/Edit/5
