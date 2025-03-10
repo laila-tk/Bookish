@@ -1,17 +1,27 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Bookish.ViewModels;
 
 namespace Bookish.Models;
 
 public class CheckOut {
     [Key]
-    public required int CopyId { get; set; }
+    public int CheckOutId { get; set; }
     
-    [ForeignKey("BookId")]
-    public required Book Book{ get; set; }
-    [ForeignKey("MemberId")]
-    public required Member member {get;set;}
-    public required DateOnly CheckoutDate {get;set;}
-    public required DateOnly DueDate {get;set;}
-    public DateOnly ReturnDate {get;set;}
+    [ForeignKey("Copy")]
+    public int CopyId {get;set;}
+    public BookCopy BookCopy{ get; set; }
+    [ForeignKey("Member")]
+    public int MemberId {get;set;}
+    public Member Member {get;set;}
+    public DateOnly CheckoutDate {get;set;}
+    public DateOnly DueDate {get;set;}
+    public DateOnly? ReturnDate {get;set;}
+
+    public bool Late{get;set;}
+
+     public CheckOut(CheckOutViewModel checkOutViewModel) {
+        MemberId = checkOutViewModel.MemberId;     
+        CopyId = checkOutViewModel.CopyId;
+    }
 }

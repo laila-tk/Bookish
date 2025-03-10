@@ -3,6 +3,7 @@ using System;
 using Bookish.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bookish.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20250310134609_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,9 +76,6 @@ namespace Bookish.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CheckOutId"));
 
-                    b.Property<int>("BookCopyCopyId")
-                        .HasColumnType("integer");
-
                     b.Property<DateOnly>("CheckoutDate")
                         .HasColumnType("date");
 
@@ -85,9 +85,6 @@ namespace Bookish.Migrations
                     b.Property<DateOnly>("DueDate")
                         .HasColumnType("date");
 
-                    b.Property<bool>("Late")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("MemberId")
                         .HasColumnType("integer");
 
@@ -96,7 +93,7 @@ namespace Bookish.Migrations
 
                     b.HasKey("CheckOutId");
 
-                    b.HasIndex("BookCopyCopyId");
+                    b.HasIndex("CopyId");
 
                     b.HasIndex("MemberId");
 
@@ -142,7 +139,7 @@ namespace Bookish.Migrations
                 {
                     b.HasOne("Bookish.Models.BookCopy", "BookCopy")
                         .WithMany("BookCopyCheckOuts")
-                        .HasForeignKey("BookCopyCopyId")
+                        .HasForeignKey("CopyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

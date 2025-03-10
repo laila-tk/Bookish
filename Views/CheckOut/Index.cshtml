@@ -1,0 +1,44 @@
+@model IEnumerable<Bookish.Models.CheckOut>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<p>
+    <a asp-action="Create">Checkout Book</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Member.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookCopy.Book.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckoutDate)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var checkout in Model) {
+        <tr>
+            <td>
+                @checkout.Member.Name
+            </td>
+             <td>
+                @checkout.BookCopy.Book.Title
+            </td>
+            <td>
+                @checkout.CheckoutDate.ToString("MM/DD/YYYY")
+            </td>
+            <td>
+                @checkout.DueDate.ToString("MM/DD/YYYY")
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

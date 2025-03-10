@@ -8,7 +8,7 @@ public class BookCopy {
     [Key]
     public int CopyId { get; set; }
     
-    [ForeignKey("BookId")]
+    [ForeignKey("Book")]
     public int BookId { get; set; }
     public Book Book{ get; set; }
 

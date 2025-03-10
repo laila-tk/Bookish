@@ -11,7 +11,7 @@ public class Book {
     public string Author {get; set; }
     public string Category {get; set;}
 
-    public List<BookCopy> Copies {get;set;} = new List<BookCopy>();
+    public ICollection<BookCopy> Copies {get;set;} = new List<BookCopy>();
     
 
     public Book(BookViewModel bookViewModel) {
