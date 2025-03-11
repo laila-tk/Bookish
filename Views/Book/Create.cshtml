@@ -1,4 +1,4 @@
-@model Bookish.Models.Book
+@model Bookish.ViewModels.BookViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -24,6 +24,10 @@
                 <label asp-for="Category" class="control-label"></label>
                 <input asp-for="Category" class="form-control" />
                 <span asp-validation-for="Category" class="text-danger"></span>
+
+                <label asp-for="NumberOfCopies" class="control-label"></label>
+                <input asp-for="NumberOfCopies" class="form-control" />
+                <span asp-validation-for="NumberOfCopies" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -24,11 +24,11 @@ namespace Bookish.Migrations
 
             modelBuilder.Entity("Bookish.Models.Book", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BookId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookId"));
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -42,18 +42,68 @@ namespace Bookish.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("BookId");
 
                     b.ToTable("Book");
                 });
 
-            modelBuilder.Entity("Bookish.Models.Member", b =>
+            modelBuilder.Entity("Bookish.Models.BookCopy", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BookCopyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookCopyId"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("BookCopyId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BookCopy");
+                });
+
+            modelBuilder.Entity("Bookish.Models.CheckOut", b =>
+                {
+                    b.Property<int>("CheckOutId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CheckOutId"));
+
+                    b.Property<int>("BookCopyId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly>("CheckoutDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly?>("ReturnDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("CheckOutId");
+
+                    b.HasIndex("BookCopyId");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("CheckOut");
+                });
+
+            modelBuilder.Entity("Bookish.Models.Member", b =>
+                {
+                    b.Property<int>("MemberId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MemberId"));
 
                     b.Property<DateOnly>("DateOfRegistration")
                         .HasColumnType("date");
@@ -66,9 +116,54 @@ namespace Bookish.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("MemberId");
 
                     b.ToTable("Member");
+                });
+
+            modelBuilder.Entity("Bookish.Models.BookCopy", b =>
+                {
+                    b.HasOne("Bookish.Models.Book", "Book")
+                        .WithMany("Copies")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Bookish.Models.CheckOut", b =>
+                {
+                    b.HasOne("Bookish.Models.BookCopy", "BookCopy")
+                        .WithMany("BookCopyCheckOuts")
+                        .HasForeignKey("BookCopyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bookish.Models.Member", "Member")
+                        .WithMany("MemberCheckOuts")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BookCopy");
+
+                    b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("Bookish.Models.Book", b =>
+                {
+                    b.Navigation("Copies");
+                });
+
+            modelBuilder.Entity("Bookish.Models.BookCopy", b =>
+                {
+                    b.Navigation("BookCopyCheckOuts");
+                });
+
+            modelBuilder.Entity("Bookish.Models.Member", b =>
+                {
+                    b.Navigation("MemberCheckOuts");
                 });
 #pragma warning restore 612, 618
         }

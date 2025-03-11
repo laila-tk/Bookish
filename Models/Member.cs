@@ -1,22 +1,25 @@
+using System.ComponentModel.Design;
 using Bookish.ViewModels;
 
 namespace Bookish.Models;
 
 public class Member {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public DateOnly DateOfRegistration {get; set; }
-    public string Email {get; set;}
+    public required int MemberId { get; set; }
+    public required string Name { get; set; }
+    public required DateOnly DateOfRegistration {get; set; }
+    public required string Email {get; set;}
+
+    public ICollection<CheckOut> MemberCheckOuts {get; set;} = new List <CheckOut>();
 
     public Member(MemberViewModel memberViewModel) {
-        Id = memberViewModel.Id;
+        MemberId = memberViewModel.MemberId;
         Name = memberViewModel.Name;
         DateOfRegistration = memberViewModel.DateOfRegistration;
         Email = memberViewModel.Email;
     }
 
-    public Member(int id, string name, DateOnly dateOfRegistration, string email) {
-        Id = id;
+    public Member(int memberId, string name, DateOnly dateOfRegistration, string email) {
+        MemberId = memberId;
         Name = name;
         DateOfRegistration = dateOfRegistration;
         Email = email;

@@ -1,24 +1,30 @@
 using Bookish.ViewModels;
-
+using System.ComponentModel.DataAnnotations;
 namespace Bookish.Models;
 
 public class Book {
-    public int Id { get; set; }
-    public string Title { get; set; }
+
+    [Key]
+    public int BookId { get; set; }
+    
+    public  string Title { get; set; }
     public string Author {get; set; }
     public string Category {get; set;}
 
+    public ICollection<BookCopy> Copies {get;set;} = new List<BookCopy>();
+    
+
     public Book(BookViewModel bookViewModel) {
-        Id = bookViewModel.Id;
+        BookId = bookViewModel.BookId;
         Title = bookViewModel.Title;
         Author = bookViewModel.Author;
         Category = bookViewModel.Category;
     }
-     public Book(int id, string title, string author, string category) {
-        Id = id;
-        Title = title;
-        Author = author;  
-        Category = category;     
-     }
+    //  public Book(int bookId, string title, string author, string category) {
+    //     BookId = bookId;
+    //     Title = title;
+    //     Author = author;  
+    //     Category = category;     
+    //  }
      public Book() {}
 }

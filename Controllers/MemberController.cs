@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bookish.Database;
 using Bookish.Models;
+using Bookish.ViewModels;
 
 namespace Bookish.Controllers
 {
@@ -22,18 +23,18 @@ namespace Bookish.Controllers
         // GET: Member
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Member.OrderBy(member=>member.Id).ToListAsync());
+            return View(await _context.Member.OrderBy(member=>member.MemberId).ToListAsync());
         }
 
         // GET: Member/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? memberId)
         {
-            if (id == null)
+            if (memberId == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Member.FirstOrDefaultAsync(m => m.Id == id);
+            var member = await _context.Member.FirstOrDefaultAsync(m => m.MemberId == memberId);
             if (member == null)
             {
                 return NotFound();
@@ -63,14 +64,14 @@ namespace Bookish.Controllers
         }
 
         // GET: Member/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? memberId)
         {
-            if (id == null)
+            if (memberId == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Member.FindAsync(id);
+            var member = await _context.Member.FindAsync(memberId);
             if (member == null)
             {
                 return NotFound();
@@ -81,45 +82,32 @@ namespace Bookish.Controllers
         // POST: Member/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title")] Member member)
+        public async Task<IActionResult> Edit(MemberViewModel model)
         {
-            if (id != member.Id)
+             if (ModelState.IsValid)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var member = _context.Member.Find(model.MemberId);
+                if(member==null)
                 {
-                    _context.Update(member);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MemberExists(member.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                member.Name = model.Name;
+                member.Email = model.Email;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return View(member);
+            return View(model);
         }
 
         // GET: Member/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? memberId)
         {
-            if (id == null)
+            if (memberId == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Member.FirstOrDefaultAsync(m => m.Id == id);
+            var member = await _context.Member.FirstOrDefaultAsync(m => m.MemberId == memberId);
             if (member == null)
             {
                 return NotFound();
@@ -131,9 +119,9 @@ namespace Bookish.Controllers
         // POST: Member/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int memberId)
         {
-            var member = await _context.Member.FindAsync(id);
+            var member = await _context.Member.FindAsync(memberId);
             if (member != null)
             {
                 _context.Member.Remove(member);
@@ -143,9 +131,9 @@ namespace Bookish.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MemberExists(int id)
+        private bool MemberExists(int memberId)
         {
-            return _context.Member.Any(m => m.Id == id);
+            return _context.Member.Any(m => m.MemberId == memberId);
         }
     }
 }

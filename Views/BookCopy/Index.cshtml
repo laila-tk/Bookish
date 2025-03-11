@@ -1,0 +1,53 @@
+@model IEnumerable<Bookish.Models.BookCopy>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+    var groupedBooks = Model
+        .GroupBy(b => b.BookId)
+        .Select(group => new
+        {
+            BookId = group.Key,
+            CopyCount = group.Count(),
+            Title = group.FirstOrDefault().Book.Title,
+            Author = group.FirstOrDefault().Book.Author
+        });
+}
+
+<h1>Book Copy</h1>
+
+<p>
+    <a asp-action="Create">Add New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Book.BookId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book.Copies)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in groupedBooks) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookId)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CopyCount)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
